@@ -119,7 +119,7 @@ transition:all 1s ease;
 {
     .container
     {
-        width: calc(100vw - 40vw);
+        width: calc(100vw - 25vw);
         max-width: 100%;
     }
 }
