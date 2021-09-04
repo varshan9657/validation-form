@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="form.css">
+    <!--font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" >
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Registration form</h2>
+        </div>
+        <form class="form" id="form">
+            <div class="form-control">
+                <label>Username</label>
+                <input type="text" name="" id="username" placeholder="enter your name" autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label>Email</label>
+                <input type="email" name="" id="email" placeholder="enter your email" autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-control">
+                <label>Phone number</label>
+                <input type="number" name="" id="phone" placeholder="enter your phone number" autocomplete="off">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i>
+                <small>Error Msg</small>
+            </div>
+            <input type="submit" value="submit" class="btn" name="">
+        </form>
+    </div>
+<!--sweet alert-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!--javascript code-->
+    <script>
+
+
+        const form = document.getElementById('form');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        var letters = /^[a-zA-z ]*$/;
+        var phonecheck = /^[789][0-9]{9}$/;
+        var jio = /^[621-799][0-9]{9}$/;
+        var idea = /^[801-920][0-9]{9}$/;
+        var vodafone = /^[921-999][0-9]{9}$/;
+        
+
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            validate();
+        })
+
+        const sendData = (usernameVal,sRate, count) => {
+            if(sRate === count){
+                //alert('registration successful');
+                swal("Welcome!"+usernameVal, "Registration Successful", "success");
+               location.href = `http://pixel6.co/`
+            }
+        }
+
+        // for final data validation
+        const successMsg = (usernameVal) => {
+            let formCon = document.getElementsByClassName('form-control');
+
+            var count = formCon.length - 1;
+            for (var i = 0; i < formCon.length; i++) {
+              if (formCon[i].className === "form-control success") {
+                  var sRate = 0 + i;
+                  console.log(sRate);
+
+                sendData(usernameVal, sRate, count);
+               }
+               else{
+                   return false;
+               }
+            }
+        }
+        //more email validation
+        const isEmail = (emailVal) => {
+            var atSymbol = emailVal.indexOf("@");
+            if (atSymbol < 1) return false;
+            var dot = emailVal.lastIndexOf(".");
+            if (dot <= atSymbol + 3) return false;
+            if (dot = emailVal.legnth - 1) return false;
+            return true;
+
+
+        }
+        //define the validate function
+
+        const validate = () => {
+            const usernameVal = username.value.trim();
+            const emailVal = email.value.trim();
+            const phoneVal = phone.value.trim();
+
+            //validate username
+            if (usernameVal === "") {
+                setErrorMsg(username, 'username can not blank');
+            }
+            else if (usernameVal.length <= 2) {
+                setErrorMsg(username, 'username min 3 char');
+
+            }
+            else if (!username.value.match(letters)) {
+                setErrorMsg(username, 'username only contain alphabet');
+            }
+           
+            else {
+                setSuccessMsg(username)
+            }
+
+
+            //validate email
+            if (emailVal === "") {
+                setErrorMsg(email, 'email cant not blank');
+            }
+            else if (!isEmail(emailVal)) {
+                setErrorMsg(email, 'not a valid email');
+
+            }
+            else {
+                setSuccessMsg(email);
+            }
+
+
+
+            //validation for mobile number
+            if (phoneVal === "") {
+                setErrorMsg(phone, 'phone cant not blank');
+            }
+           
+            
+            else if (phoneVal.length !== 10) {
+                setErrorMsg(phone, 'not a valid phone');
+
+            }
+            else if(phone.value.match(jio))
+            {
+                alert('it is jio number');
+                setSuccessMsg(phone);
+            }
+            else if(phone.value.match(idea))
+            {
+                alert('it is idea number');
+                setSuccessMsg(phone);
+            }
+            else if(phone.value.match(vodafone))
+            {
+                alert('it is vodafone number');
+                setSuccessMsg(phone);
+            }
+            else if (!phone.value.match(phonecheck)) {
+                setErrorMsg(phone, 'it is not correct number');
+
+            }
+            else {
+                setSuccessMsg(phone);
+            }
+            successMsg(usernameVal);
+        }
+        function setErrorMsg(input, errormsgs) {
+            const formControl = input.parentElement;
+            const small = formControl.querySelector('small');
+            formControl.className = "form-control error";
+            small.innerText = errormsgs;
+        }
+        function setSuccessMsg(input) {
+            const formControl = input.parentElement;
+            formControl.className = "form-control success";
+        }
+    </script>
+</body>
+
+</html>
